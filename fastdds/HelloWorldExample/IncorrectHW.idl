@@ -1,0 +1,6 @@
+struct IncorrectHW
+{
+	string id;
+	string message;
+};
+
