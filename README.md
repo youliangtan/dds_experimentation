@@ -16,22 +16,26 @@ vcs import src < fastrtps.repos
 
 ### Testing dynamic msg pubsub
 
-Reffered to this eprosima [doc](https://fast-dds.docs.eprosima.com/en/latest/fastdds/dynamic_types/examples.html)
+Refered to [this](https://fast-dds.docs.eprosima.com/en/latest/fastdds/dynamic_types/examples.html) from eproxima
 
 ```bash
 cd /fastdds_ws
 source install/setup.bash 
-cd src/fastrtps/examples/C++/DDS/DynamicHelloWorldExample/
+cd src/dds_experimentation/fastdds/DynamicHelloWorldExample
 mkdir build
+cmake ..
 make -j4
 ```
 
 Run pub sub in 2 different terminals
+```bash
+# In the first one launch: 
+./DDSDynamicHelloWorldExample publisher
+# In the second one: 
+./DDSDynamicHelloWorldExample subscriber
 ```
-In the first one launch: ./DDSDynamicHelloWorldExample publisher
-(or DDSDynamicHelloWorldExample.exe publisher on windows).
-In the second one: ./DDSDynamicHelloWorldExample subscriber
-```
+
+The msg definition is defined in the `example_type.xml`. The example shows the publisher publishes `CustomMsgFoo` and `CustomMsgBar` msg types. And the sub will only able to sub to one type during discovery. Note that the msg definition is parsed via dds from the pub to sub participant.
 
 ### Static Types
 ### Generate headers from IDL
@@ -55,9 +59,7 @@ Provide listener class member to `create_topic()` function. However, currently t
 
 ### Parsing UserDataQosPolicy
 
-Working in progress....
-
----
+Working in progress in `HellowWorldExample`
 
 ## RTI Connext
 

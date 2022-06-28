@@ -79,12 +79,10 @@ private:
                 eprosima::fastdds::dds::DataReader* reader,
                 const eprosima::fastdds::dds::SubscriptionMatchedStatus& info) override;
 
-        // // IncorrectHW hello_;
-        // HelloWorld hello_;
-
         int matched_;
 
         uint32_t samples_;
+        eprosima::fastdds::dds::DomainParticipant* listener_participant_;
     }
     listener_;
 };

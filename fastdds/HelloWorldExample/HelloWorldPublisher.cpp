@@ -63,6 +63,7 @@ bool HelloWorldPublisher::init()
     pqos.name("Participant_pub");
     pqos.user_data(user_data);
     participant_ = DomainParticipantFactory::get_instance()->create_participant(0, pqos);
+    // ====================================================
 
     if (participant_ == nullptr)
     {
@@ -192,7 +193,9 @@ void HelloWorldPublisher::run(
 bool HelloWorldPublisher::publish(
         bool waitForListener)
 {
+    /// return false if no match, script will just wait for matching listener
     if (listener_.firstConnected_ || !waitForListener || listener_.matched_ > 0)
+    // if(true)
     {
         hello_.index(hello_.index() + 1);
         writer_->write(&hello_);

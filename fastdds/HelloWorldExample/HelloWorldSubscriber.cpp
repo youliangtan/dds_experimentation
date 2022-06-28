@@ -109,6 +109,8 @@ bool HelloWorldSubscriber::init()
     rqos.reliability().kind = RELIABLE_RELIABILITY_QOS;
     reader_ = subscriber_->create_datareader(topic_, rqos, &listener_);
 
+    listener_.listener_participant_ = participant_;
+
     if (reader_ == nullptr)
     {
         return false;
@@ -135,19 +137,33 @@ HelloWorldSubscriber::~HelloWorldSubscriber()
 }
 
 void HelloWorldSubscriber::SubListener::on_subscription_matched(
-        DataReader*,
+        DataReader* reader,
         const SubscriptionMatchedStatus& info)
 {
     if (info.current_count_change == 1)
     {
         matched_ = info.total_count;
         std::cout << "Subscriber matched." << std::endl;
-        // eprosima::fastdds::dds::builtin::ParticipantBuiltinTopicData participants_data;
-        // InstanceHandle_t no_handle;
-        // participant_->get_discovered_participant_data(participants_data, no_handle)
-        // const auto vec = participants_data.user_data.data_vec(); 
-        // for (auto &x: vec)
-        //     std::cout << x << std::endl;
+
+        /// TODO: (YL) test implementation of user data
+        std::cout << "--- detected participants: " << std::endl;
+        const auto parts = listener_participant_->get_participant_names();
+        for (auto &p: parts)
+            std::cout << p << std::endl;
+
+        // const auto user_datas = 
+        std::vector<InstanceHandle_t> test_handles;
+        listener_participant_->get_discovered_participants(test_handles);
+        std::cout << "--- Handle participant sizes " 
+                  << test_handles.size() << std::endl;
+
+        InstanceHandle_t no_handle;
+        eprosima::fastdds::dds::builtin::ParticipantBuiltinTopicData participants_data;
+        listener_participant_->get_discovered_participant_data(participants_data, no_handle);
+        const auto vec = participants_data.user_data.data_vec();
+        for (auto &x: vec)
+            std::cout << x << std::endl;
+        std::cout << "--> Finished printing part user data of size: " << vec.size() << std::endl;
     }
     else if (info.current_count_change == -1)
     {
@@ -168,6 +184,18 @@ void HelloWorldSubscriber::SubListener::on_data_available(
     /// Note(YL): Switching incompatible datatype
     // IncorrectHW msg;
     HelloWorld msg;
+
+    //// Note: experimentation
+    {
+        InstanceHandle_t no_handle;
+        eprosima::fastdds::dds::builtin::PublicationBuiltinTopicData publications;
+        reader->get_matched_publication_data(publications, no_handle);
+        const auto vec2 = publications.user_data.data_vec();
+        for (auto &x: vec2)
+            std::cout << x << std::endl;
+        std::cout << "--> Finished printing pub user data of size: " << vec2.size() << std::endl;
+    }
+
     if (reader->take_next_sample(&msg, &info) == ReturnCode_t::RETCODE_OK)
     {
         if (info.instance_state == ALIVE_INSTANCE_STATE)
