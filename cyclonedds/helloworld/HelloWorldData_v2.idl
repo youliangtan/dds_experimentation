@@ -1,4 +1,4 @@
-module HelloWorldData
+module HelloWorldData_v2
 {
   @appendable
   struct Msg
@@ -6,5 +6,6 @@ module HelloWorldData
     @key
     long userID;
     string message;
+    string version;
   };
 };

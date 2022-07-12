@@ -21,7 +21,7 @@
 #define HELLOWORLDSUBSCRIBER_H_
 
 #include "HelloWorldPubSubTypes.h"
-#include "IncorrectHWPubSubTypes.h"
+#include "HelloWorld_v2PubSubTypes.h"
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>

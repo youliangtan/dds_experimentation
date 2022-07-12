@@ -119,6 +119,12 @@ cmake ..
 make -j4
 ```
 
+Run
+```
+./HelloworldPublisher
+./HelloworldSubscriber
+```
 
 Unfortunately, not able to trigger `on_inconsistent_topic` callback
 
+The above example also shows the usage of dds's extensibility by using `@appendable` in 2 different .idl definitions for pub sub.

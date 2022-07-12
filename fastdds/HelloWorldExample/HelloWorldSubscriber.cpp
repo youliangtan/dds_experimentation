@@ -61,7 +61,7 @@ HelloWorldSubscriber::HelloWorldSubscriber()
     , subscriber_(nullptr)
     , topic_(nullptr)
     , reader_(nullptr)
-    // , type_(new IncorrectHWPubSubType()) //// Note(YL): Switching incompatible datatype
+    // , type_(new HelloWorld_v2PubSubType()) //// Note(YL): Switching incompatible datatype
     , type_(new HelloWorldPubSubType())
 {
 }
@@ -182,7 +182,7 @@ void HelloWorldSubscriber::SubListener::on_data_available(
 {
     SampleInfo info;
     /// Note(YL): Switching incompatible datatype
-    // IncorrectHW msg;
+    // HelloWorld_v2 msg;
     HelloWorld msg;
 
     //// Note: experimentation

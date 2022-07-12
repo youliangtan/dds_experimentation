@@ -1,5 +1,5 @@
 #include "dds/dds.h"
-#include "HelloWorldData.h"
+#include "HelloWorldData_v2.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -29,7 +29,7 @@ int main (int argc, char ** argv)
   dds_entity_t participant;
   dds_entity_t topic;
   dds_entity_t reader;
-  HelloWorldData_Msg *msg;
+  HelloWorldData_v2_Msg *msg;
   void *samples[MAX_SAMPLES];
   dds_sample_info_t infos[MAX_SAMPLES];
   dds_return_t rc;
@@ -51,7 +51,7 @@ int main (int argc, char ** argv)
 
   /* Create a Topic. */
   topic = dds_create_topic (
-    participant, &HelloWorldData_Msg_desc, "HelloWorldData_Msg", NULL, listener);
+    participant, &HelloWorldData_v2_Msg_desc, "hello_world_topic", NULL, listener);
   if (topic < 0)
     DDS_FATAL("dds_create_topic: %s\n", dds_strretcode(-topic));
 
@@ -68,7 +68,7 @@ int main (int argc, char ** argv)
 
   /* Initialize sample buffer, by pointing the void pointer within
    * the buffer array to a valid sample memory location. */
-  samples[0] = HelloWorldData_Msg__alloc ();
+  samples[0] = HelloWorldData_v2_Msg__alloc ();
 
   /* Poll until data has been read. */
   while (true)
@@ -83,7 +83,7 @@ int main (int argc, char ** argv)
     if ((rc > 0) && (infos[0].valid_data))
     {
       /* Print Message. */
-      msg = (HelloWorldData_Msg*) samples[0];
+      msg = (HelloWorldData_v2_Msg*) samples[0];
       printf ("=== [Subscriber] Received : ");
       printf ("Message (%"PRId32", %s)\n", msg->userID, msg->message);
       fflush (stdout);
@@ -97,7 +97,7 @@ int main (int argc, char ** argv)
   }
 
   /* Free the data location. */
-  HelloWorldData_Msg_free (samples[0], DDS_FREE_ALL);
+  HelloWorldData_v2_Msg_free (samples[0], DDS_FREE_ALL);
 
   /* Deleting the participant will delete all its children recursively as well. */
   rc = dds_delete (participant);

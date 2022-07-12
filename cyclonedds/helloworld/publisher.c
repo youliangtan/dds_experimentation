@@ -21,7 +21,7 @@ int main (int argc, char ** argv)
 
   /* Create a Topic. */
   topic = dds_create_topic (
-    participant, &HelloWorldData_Msg_desc, "HelloWorldData_Msg", NULL, NULL);
+    participant, &HelloWorldData_Msg_desc, "hello_world_topic", NULL, NULL);
   if (topic < 0)
     DDS_FATAL("dds_create_topic: %s\n", dds_strretcode(-topic));
 

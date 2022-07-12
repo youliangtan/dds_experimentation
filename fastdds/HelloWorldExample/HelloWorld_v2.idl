@@ -1,4 +1,5 @@
-struct IncorrectHW
+@appendable
+struct HelloWorld_v2
 {
 	string id;
 	string message;
