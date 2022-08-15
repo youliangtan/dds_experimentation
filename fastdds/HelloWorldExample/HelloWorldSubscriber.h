@@ -20,8 +20,17 @@
 #ifndef HELLOWORLDSUBSCRIBER_H_
 #define HELLOWORLDSUBSCRIBER_H_
 
+#define MSG_VERSION 1 // Toggle this
+
+#if MSG_VERSION == 1
+    #include "HelloWorld_v1PubSubTypes.h"
+    using HelloWorld_VX = HelloWorld_v1;
+    using HelloWorld_VXPubSubType = HelloWorld_v1PubSubType;
+#elif MSG_VERSION == 2
 #include "HelloWorld_v2PubSubTypes.h"
-#include "HelloWorld_v1PubSubTypes.h"
+    using HelloWorld_VX = HelloWorld_v2;
+    using HelloWorld_VXPubSubType = HelloWorld_v2PubSubType;
+#endif
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>

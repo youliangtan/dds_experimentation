@@ -48,16 +48,19 @@ int main (int argc, char ** argv)
   }
 
   /* Create a message to write. */
-  msg.index = 1;
-  msg.message = "Hello World";
+  for (int i = 1; i < 5; ++i)
+  {
+    msg.index = i;
+    msg.message = "Hello World";
 
-  printf ("=== [Publisher]  Writing : ");
-  printf ("Message (%"PRId32", %s)\n", msg.index, msg.message);
-  fflush (stdout);
+    printf ("=== [Publisher]  Writing : ");
+    printf ("Message (%"PRId32", %s)\n", msg.index, msg.message);
+    fflush (stdout);
 
-  rc = dds_write (writer, &msg);
-  if (rc != DDS_RETCODE_OK)
-    DDS_FATAL("dds_write: %s\n", dds_strretcode(-rc));
+    rc = dds_write (writer, &msg);
+    if (rc != DDS_RETCODE_OK)
+      DDS_FATAL("dds_write: %s\n", dds_strretcode(-rc));
+  }  
 
   /* Deleting the participant will delete all its children recursively as well. */
   rc = dds_delete (participant);

@@ -48,11 +48,11 @@ struct HelloWorld_v1
 </table>
 
 
-2) Message `HelloWorld_v2.idl`
+2) Message `HelloWorld_v2.idl` (type4 with extensibility)
 
 <table>
 <tr>
-<td> Type 1 </td> <td> Type 2 </td> <td> Type 3 </td>
+<td> Type 1 </td> <td> Type 2 </td> <td> Type 3 </td> <td> Type 4 </td>
 </tr>
 <tr>
 <td>
@@ -74,6 +74,16 @@ struct HelloWorld_v2
   unsigned long index;
   string message;
   float value;
+};
+```
+</td>
+<td>
+
+```cpp
+struct HelloWorld_v2
+{
+  short index;
+  string message;
 };
 ```
 </td>
@@ -155,11 +165,16 @@ struct HelloWorld_v3
 | **Mismatch Type Name** <br> `HelloWorld_v1.idl` with `HelloWorld_v2.idl` |
 | `V1T1` with `V2T1` | &cross; | &cross; | &check; |
 | `V1T1` with `V2T2` | &cross; | &cross; | &check; |
-| `V1T1` with `V2T3` | &cross; | &cross; | &check; |
+| `V1T1` with `V2T3` | &cross; | &cross; | &cross; |
+| `V1T1` with `V2T4` | &cross; | &cross; | &check; |
 | **Extensibility with mismatch type name** `HelloWorld_v2.idl` with `HelloWorld_v3.idl` |||
-| `V2T3` with `V3T1` | &cross; | &check; | &check; |
-| `V2T3` with `V3T2` | &cross; | &cross; | &check; |
-| `V2T3` with `V3T3` | &cross; | NA | &cross; |
+| `V2T4` with `V3T1` | &cross; | &check; | &check; |
+| `V2T4` with `V3T2` | &cross; | &cross; | &check; |
+| `V2T4` with `V3T3` | &cross; | &cross; | &cross; |
+
+*-`fastdds` is tested with `fastdds/HelloWorldExample/`
+-`cyclonedds` is tested with `cyclonedds/helloworld/`
+-`rticonnext` is tested with `rticonnext/hello_world_example/c++11/`*
 
 ---
 
@@ -199,17 +214,27 @@ Run pub sub in 2 different terminals
 
 The msg definition is defined in the `example_type.xml`. The example shows the publisher publishes `CustomMsgFoo` and `CustomMsgBar` msg types. And the sub will only able to sub to one type during discovery. Note that the msg definition is parsed via dds from the pub to sub participant.
 
-### Static Types
-### Generate headers from IDL
+### Static Types: HelloWorldExample
+#### Generate headers from IDL
 
 Uses `fastddsgen`
 
 Quick installation, follow: https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#fast-dds-gen-installation
 
-After installations and compilations
+After installations and compilations, generate headers
 ```bash
 cd dds_experimentation/fastdds/HelloWorldExample
 java -jar ~/fastdds_ws/src/fastddsgen/share/fastddsgen/java/fastddsgen.jar HelloWorld_v1.idl -replace
+```
+
+#### Compile and Run pubsub
+```bash
+mkdir build && cd build
+cmake .. && make -j4
+
+# run 
+./DDSHelloWorldExample publisher
+./DDSHelloWorldExample subscriber
 ```
 
 ### Testing with incompatible topic detection
@@ -221,7 +246,7 @@ Provide listener class member to `create_topic()` function. However, currently t
 
 ### Parsing UserDataQosPolicy
 
-Working in progress in `HellowWorldExample`
+*Working in progress in `HellowWorldExample`*
 
 ---
 
@@ -276,7 +301,7 @@ SubscriberListener: on_data_on_readers()
 
 ### Hello world example:
 
-Generate headers from `idl`
+Originated from [here](https://github.com/rticommunity/rticonnextdds-getting-started/tree/master/2_hello_world). During build, the `connextdds_add_example.cmake` will generate cpp headers according to `.idl`. 
 ```bash
 cd hello_world_example
 mkdir build cd build
@@ -284,10 +309,10 @@ cmake ..
 make -j4
 ```
 
-Run
+Run pub sub
 ```bash
-example_publisher
-example_subscriber
+./example_publisher
+./example_subscriber
 ```
 
 ---
@@ -314,3 +339,5 @@ Run
 Unfortunately, not able to trigger `on_inconsistent_topic` callback
 
 The above example also shows the usage of dds's extensibility by using `@appendable` in 2 different .idl definitions for pub sub.
+
+To switch sub with msg v2, set `#define MSG_VERSION 2` in `subscriber.c`
