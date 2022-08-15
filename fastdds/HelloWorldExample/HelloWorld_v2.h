@@ -122,30 +122,24 @@ public:
             const HelloWorld_v2& x) const;
 
     /*!
-     * @brief This function copies the value in member id
-     * @param _id New value to be copied in member id
+     * @brief This function sets a value in member index
+     * @param _index New value for member index
      */
-    eProsima_user_DllExport void id(
-            const std::string& _id);
+    eProsima_user_DllExport void index(
+            uint32_t _index);
 
     /*!
-     * @brief This function moves the value in member id
-     * @param _id New value to be moved in member id
+     * @brief This function returns the value of member index
+     * @return Value of member index
      */
-    eProsima_user_DllExport void id(
-            std::string&& _id);
+    eProsima_user_DllExport uint32_t index() const;
 
     /*!
-     * @brief This function returns a constant reference to member id
-     * @return Constant reference to member id
+     * @brief This function returns a reference to member index
+     * @return Reference to member index
      */
-    eProsima_user_DllExport const std::string& id() const;
+    eProsima_user_DllExport uint32_t& index();
 
-    /*!
-     * @brief This function returns a reference to member id
-     * @return Reference to member id
-     */
-    eProsima_user_DllExport std::string& id();
     /*!
      * @brief This function copies the value in member message
      * @param _message New value to be copied in member message
@@ -171,6 +165,25 @@ public:
      * @return Reference to member message
      */
     eProsima_user_DllExport std::string& message();
+    /*!
+     * @brief This function sets a value in member value
+     * @param _value New value for member value
+     */
+    eProsima_user_DllExport void value(
+            float _value);
+
+    /*!
+     * @brief This function returns the value of member value
+     * @return Value of member value
+     */
+    eProsima_user_DllExport float value() const;
+
+    /*!
+     * @brief This function returns a reference to member value
+     * @return Reference to member value
+     */
+    eProsima_user_DllExport float& value();
+
 
     /*!
      * @brief This function returns the maximum serialized size of an object
@@ -231,8 +244,9 @@ public:
 
 private:
 
-    std::string m_id;
+    uint32_t m_index;
     std::string m_message;
+    float m_value;
 };
 
 #endif // _FAST_DDS_GENERATED_HELLOWORLD_V2_H_

@@ -22,8 +22,8 @@ endif()
 # In short, it takes the idl file, generates the source files with
 # the proper data types and compiles them into a library.
 idlc_generate(
-  TARGET HelloWorldData_lib
-  FILES "HelloWorldData.idl" "HelloWorldData_v2.idl"
+  TARGET HelloWorld_msg_lib
+  FILES "HelloWorld_v1.idl" "HelloWorld_v2.idl"
   WARNINGS no-implicit-extensibility
 )
 
@@ -33,5 +33,5 @@ add_executable(HelloworldSubscriber subscriber.c)
 
 # Both executables need to be linked to the idl data type library and
 # the ddsc API library.
-target_link_libraries(HelloworldPublisher HelloWorldData_lib  CycloneDDS::ddsc)
-target_link_libraries(HelloworldSubscriber HelloWorldData_lib  CycloneDDS::ddsc)
+target_link_libraries(HelloworldPublisher HelloWorld_msg_lib CycloneDDS::ddsc)
+target_link_libraries(HelloworldSubscriber HelloWorld_msg_lib CycloneDDS::ddsc)

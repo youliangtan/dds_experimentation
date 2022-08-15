@@ -14,8 +14,11 @@
  * listeners is the data type we will register the topic
  * both in the publisher and subscriber applications.
  */
+// @appendable
 struct listeners {
     int16 x;
+    string hash;
+    float value;
 };
 
 /*

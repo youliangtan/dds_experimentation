@@ -1,0 +1,10 @@
+module HelloWorld_v1
+{
+  @appendable
+  struct Msg
+  {
+    unsigned long index;
+    string message;
+    float value;
+  };
+};

@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.11)
 project(rtiexamples-listeners)
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../../resources/cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../resources/cmake" # NOTE(YL) path to resources dir
 )
 
 # Include ConnextDdsAddExample.cmake from resources/cmake
@@ -15,6 +15,20 @@ include(ConnextDdsAddExample)
 
 connextdds_add_example(
     IDL listeners
+    # IDL listeners_v2
     LANG "C++11"
     NO_REQUIRE_QOS
 )
+
+# set(CMAKE_MODULE_PATH
+#     ${CMAKE_MODULE_PATH}
+#     "${CMAKE_CURRENT_SOURCE_DIR}/../resources/cmake" # NOTE(YL) path to resources dir
+# )
+
+# include(ConnextDdsAddExample)
+
+# connextdds_add_example(
+#     IDL listeners_v2
+#     LANG "C++11"
+#     NO_REQUIRE_QOS
+# )

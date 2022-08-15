@@ -1,0 +1,7 @@
+# This project has a specific makefile / solution
+!*.sln
+!*.vcxproj
+!makefile*
+
+# Ignore temp IDL file
+Foo.idl

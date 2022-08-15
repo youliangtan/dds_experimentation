@@ -1,0 +1,11 @@
+module HelloWorld_v2
+{
+  @appendable
+  struct Msg
+  {
+    unsigned long index;
+    string message;
+    float value;
+    sequence<double> data;
+  };
+};

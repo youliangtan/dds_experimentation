@@ -1,7 +1,7 @@
 @appendable
 struct HelloWorld_v2
 {
-	string id;
-	string message;
+  unsigned long index;
+  string message;
+  float value;
 };
-

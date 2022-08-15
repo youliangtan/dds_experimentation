@@ -1,5 +1,167 @@
 # dds_experimentation
-testing with dds vendors
+
+We will check if various forms of msg with different typename and fields can be communicated across pub sub nodes. Msgs are shown below:
+
+### Msg Definition
+
+1) Message: `HelloWorld_v1.idl`
+
+<table>
+<tr>
+<td> Type 1 </td> <td> Type 2 </td> <td> Type 3 </td>
+</tr>
+<tr>
+<td>
+
+```cpp
+struct HelloWorld_v1
+{
+  unsigned long index;
+  string message;
+};
+```
+
+</td>
+<td>
+
+```cpp
+struct HelloWorld_v1
+{
+  unsigned long index;
+  string message;
+  float value;
+};
+```
+</td>
+
+<td>
+
+```cpp
+struct HelloWorld_v1
+{
+  short index;
+  string message;
+};
+```
+</td>
+</tr>
+</table>
+
+
+2) Message `HelloWorld_v2.idl`
+
+<table>
+<tr>
+<td> Type 1 </td> <td> Type 2 </td> <td> Type 3 </td>
+</tr>
+<tr>
+<td>
+
+```cpp
+struct HelloWorld_v2
+{
+  unsigned long index;
+  string message;
+};
+```
+
+</td>
+<td>
+
+```cpp
+struct HelloWorld_v2
+{
+  unsigned long index;
+  string message;
+  float value;
+};
+```
+</td>
+
+<td>
+
+```cpp
+@appendable
+struct HelloWorld_v2
+{
+  unsigned long index;
+  string message;
+  float value;
+};
+```
+</td>
+</tr>
+</table>
+
+3) Message `HelloWorld_v3.idl`
+
+<table>
+<tr>
+<td> Type 1 </td> <td> Type 2 </td> <td> Type 3 </td>
+</tr>
+<tr>
+<td>
+
+```cpp
+@appendable
+struct HelloWorld_v3
+{
+  unsigned long index;
+  string message;
+  float value;
+  sequence<double> data;
+};
+```
+
+</td>
+<td>
+
+```cpp
+@appendable
+struct HelloWorld_v3
+{
+  unsigned long index;
+  string message;
+  short value;
+};
+```
+</td>
+
+<td>
+
+```cpp
+@appendable
+struct HelloWorld_v3
+{
+  unsigned long index;
+  float message;
+  short value;
+};
+```
+</td>
+
+</tr>
+</table>
+
+
+### Comparison Table
+
+|    |      Fast DDS      |  Cyclone DDS |  RTI Connext |
+|----------|:--:|:--:|:--:|
+| **Same Type Name**: <br> `HelloWorld_v1.idl` with `HelloWorld_v1.idl` |
+| `V1T1` with `V1T2` | &check; | &cross; | &check; |
+| `V1T1` with `V1T3` | &check; | &cross; | &cross; |
+| `V1T2` with `V1T3` | &check; | &cross; | &cross; |
+| **Mismatch Type Name** <br> `HelloWorld_v1.idl` with `HelloWorld_v2.idl` |
+| `V1T1` with `V2T1` | &cross; | &cross; | &check; |
+| `V1T1` with `V2T2` | &cross; | &cross; | &check; |
+| `V1T1` with `V2T3` | &cross; | &cross; | &check; |
+| **Extensibility with mismatch type name** `HelloWorld_v2.idl` with `HelloWorld_v3.idl` |||
+| `V2T3` with `V3T1` | &cross; | &check; | &check; |
+| `V2T3` with `V3T2` | &cross; | &cross; | &check; |
+| `V2T3` with `V3T3` | &cross; | NA | &cross; |
+
+---
 
 ## Fast DDS
 ### Create Env
@@ -45,9 +207,9 @@ Uses `fastddsgen`
 Quick installation, follow: https://fast-dds.docs.eprosima.com/en/latest/installation/sources/sources_linux.html#fast-dds-gen-installation
 
 After installations and compilations
-```
-cd fastddsgen/share/fastddsgen/java
-java -jar fastddsgen.jar HelloWorld.idl
+```bash
+cd dds_experimentation/fastdds/HelloWorldExample
+java -jar ~/fastdds_ws/src/fastddsgen/share/fastddsgen/java/fastddsgen.jar HelloWorld_v1.idl -replace
 ```
 
 ### Testing with incompatible topic detection
@@ -61,27 +223,35 @@ Provide listener class member to `create_topic()` function. However, currently t
 
 Working in progress in `HellowWorldExample`
 
+---
+
 ## RTI Connext
 
 ### Setting up env
 Install RTI:
 
-Download and install, 6.X.X: https://www.rti.com/free-trial/dds-files\. 
-Select the provided rti license during installation via the gui
+Download and install, 6.X.X: https://www.rti.com/free-trial/dds-files.
+Select the provided rti license during installation via the `RTI Launcher` gui
 
 ## on terminal
-```
+```bash
 export NDDSHOME=~/rti_connext_dds-6.1.1
 export PATH=${PATH}:~/rti_connext_dds-6.1.1/lib/x64Linux4gcc7.3.0
+```
+
+Then compile in `build` dir
+```bash
+cmake ..
+make -j4
 ```
 
 ### Testing with incompatible topic detection
 
 A modified example code of [listeners](https://github.com/rticommunity/rticonnextdds-examples/tree/master/examples/connext_dds/listeners/c%2B%2B11)
 
-After compile with cmake, then run:
-```
-./listeners_subsriber
+After compile with cmake (`cd builld && cmake .. && cmake --build .`), then run:
+```bash
+./listeners_subscriber
 ./listeners_publisher
 ```
 
@@ -102,6 +272,22 @@ SubscriberListener: on_data_on_readers()
 [x: 1]
 SubscriberListener: on_data_on_readers()
 [x: 2]
+```
+
+### Hello world example:
+
+Generate headers from `idl`
+```bash
+cd hello_world_example
+mkdir build cd build
+cmake ..
+make -j4
+```
+
+Run
+```bash
+example_publisher
+example_subscriber
 ```
 
 ---

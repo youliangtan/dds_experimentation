@@ -20,8 +20,8 @@
 #ifndef HELLOWORLDSUBSCRIBER_H_
 #define HELLOWORLDSUBSCRIBER_H_
 
-#include "HelloWorldPubSubTypes.h"
 #include "HelloWorld_v2PubSubTypes.h"
+#include "HelloWorld_v1PubSubTypes.h"
 
 #include <fastdds/dds/domain/DomainParticipant.hpp>
 #include <fastdds/dds/subscriber/DataReaderListener.hpp>

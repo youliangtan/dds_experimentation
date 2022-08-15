@@ -35,7 +35,7 @@ HelloWorldPublisher::HelloWorldPublisher()
     , publisher_(nullptr)
     , topic_(nullptr)
     , writer_(nullptr)
-    , type_(new HelloWorldPubSubType())
+    , type_(new HelloWorld_v1PubSubType())
 {
 }
 
@@ -81,7 +81,10 @@ bool HelloWorldPublisher::init()
         return false;
     }
 
-    topic_ = participant_->create_topic("HelloWorldTopic", "HelloWorld", TOPIC_QOS_DEFAULT);
+    topic_ = participant_->create_topic(
+        "HelloWorldTopic",
+        type_.get_type_name(),
+        TOPIC_QOS_DEFAULT);
 
     if (topic_ == nullptr)
     {
